@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/9mBD0Gjg/clydelogo.png">
+    <link rel="icon" type="image/png" href="">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3986DcB0/Untitled-2.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClydeShop</title>
+    <title>ClydeShop - Your One-stop Shop for HOK Global Skins</title>
     <style>
+        
         * {
             user-select: none;
             -webkit-user-select: none;
@@ -34,6 +35,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow: hidden;
         }
 
         .sidebar {
@@ -246,7 +248,34 @@
         }
 
         .shop-menu {
-            margin-bottom: 20px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            max-height: 100%;
+        }
+        
+        /* Custom scrollbar for shop menu */
+        .shop-menu::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .shop-menu::-webkit-scrollbar-track {
+            background: rgba(138, 110, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .shop-menu::-webkit-scrollbar-thumb {
+            background: rgba(138, 110, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .shop-menu::-webkit-scrollbar-thumb:hover {
+            background: rgba(138, 110, 255, 0.5);
+        }
+        #shop-panel {
+            height: calc(100vh - 100px);
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .shop-category {
@@ -258,6 +287,10 @@
             justify-content: space-between;
             align-items: center;
             color: #b8a9ff;
+        }
+        
+        .shop-category .tooltip-container {
+            margin-left: 8px;
         }
 
         .light-mode .shop-category {
@@ -276,6 +309,7 @@
         .shop-category span {
             transition: transform 0.3s;
             color: #8a6eff;
+            margin-left: auto;
         }
 
         .shop-category.open span {
@@ -337,18 +371,6 @@
             font-weight: bold;
         }
 
-        .shop-item-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            background-color: #2d2842;
-            border-radius: 4px;
-        }
-
-        .light-mode .shop-item-icon {
-            background-color: #f0f0f5;
-        }
-
         .shop-item h3 {
             font-size: 12px;
             margin-bottom: 6px;
@@ -380,7 +402,51 @@
             padding: 20px 20px 0px 20px;
             overflow-y: auto;
             flex: 1;
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #8a6eff #1a1629; /* For Firefox */
         }
+
+        /* Custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+        .content-scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-scrollable::-webkit-scrollbar-track {
+            background: #1a1629;
+            border-radius: 10px;
+        }
+
+        .content-scrollable::-webkit-scrollbar-thumb {
+            background: #8a6eff;
+            border-radius: 10px;
+        }
+
+        .content-scrollable::-webkit-scrollbar-thumb:hover {
+            background: #b8a9ff;
+        }
+
+        /* For light mode */
+        .light-mode .content-scrollable::-webkit-scrollbar-track {
+            background: #f0f0f5;
+        }
+
+        .light-mode .content-scrollable::-webkit-scrollbar-thumb {
+            background: rgba(138, 110, 255, 0.7);
+        }
+
+        .light-mode .content-scrollable::-webkit-scrollbar-thumb:hover {
+            background: rgba(138, 110, 255, 0.9);
+        }
+
+        .content-scrollable {
+        scroll-behavior: smooth;
+        }
+
+        /* Add momentum scrolling for mobile devices */
+        .content-scrollable {
+            -webkit-overflow-scrolling: touch;
+        }
+
 
         .content-header-container {
             position: sticky;
@@ -389,6 +455,7 @@
             z-index: 5;
             padding: 20px;
             padding-bottom: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .light-mode .content-header-container {
@@ -495,8 +562,7 @@
         }
 
         .character-card {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)),
-                #1a1629;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)), #1a1629;
             height: 220px;
             border-radius: 5px;
             overflow: hidden;
@@ -505,8 +571,7 @@
         }
 
         .light-mode .character-card {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0)),
-                #ffffff;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0)), #ffffff;
             border: 1px solid #e0e0e0;
         }
 
@@ -591,19 +656,6 @@
             background-color: rgba(255, 255, 255, 0.9);
         }
 
-        .character-locked {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 24px;
-            height: 24px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .character-tag {
             position: absolute;
             bottom: 40px;
@@ -634,24 +686,12 @@
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 #8a6effcc;
-            }
-
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 5px rgba(255, 59, 59, 0);
-            }
-
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0);
-            }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 #8a6effcc; }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(255, 59, 59, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 59, 59, 0); }
         }
 
         .popular-badge::before {
-            /* content: "🔥"; */
             content: "Hot";
             margin-right: 3px;
             font-size: 10px;
@@ -662,17 +702,9 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
         .character-card.popular::after {
@@ -690,60 +722,6 @@
 
         .character-card.popular:hover::after {
             opacity: 1;
-        }
-
-        .footer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            gap: 10px;
-        }
-
-        .team-picks {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .team-pick {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #8a6eff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .team-pick-selected {
-            background-color: #8a6eff;
-        }
-
-        .party-dropdown {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            opacity: 0.7;
-            cursor: pointer;
-            color: #b8a9ff;
-        }
-
-        .light-mode .party-dropdown {
-            color: #666;
-        }
-
-        .current-selection {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #e0d6ff;
-        }
-
-        .light-mode .current-selection {
-            color: #444;
         }
 
         .mobile-toggle {
@@ -765,210 +743,46 @@
             border-bottom: 1px solid #e0e0e0;
         }
 
-        .currency-display {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-        }
-
-        .light-mode .currency-display {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .currency-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #e0d6ff;
-        }
-
-        .light-mode .currency-item {
-            color: #666;
-        }
-
-        .currency-icon {
-            width: 20px;
-            height: 20px;
-            background-color: #ffca28;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .currency-value {
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        /* Theme toggle button */
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #8a6eff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-        }
-
-        .light-mode .theme-toggle {
-            background-color: #6a4bff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
         @media (min-width: 768px) {
-            .footer-container {
-                padding: 15px 15px 5px 15px;
-            }
-
             .container {
                 flex-direction: row;
             }
-
             .sidebar {
-                width: 250px;
+                width: 270px;
                 height: 100vh;
             }
-
-            .sidebar-content {
-                display: block !important;
-            }
-
-            .players-container {
-                display: block;
-            }
-
-            .player {
-                margin: 15px 0;
-            }
-
             .content {
                 height: 100vh;
+                overflow: hidden; /* Prevent content from causing body scroll */
             }
+            .footer-container { padding: 15px 15px 5px 15px; }
+            .sidebar-content { display: block !important; }
+            .players-container { display: block; }
+            .player { margin: 15px 0; }
         }
 
         @media (max-width: 767px) {
-            .mobile-toggle {
-                display: block;
-                position: sticky;
-                top: 0;
-                z-index: 20;
-            }
-
-            .sidebar {
-                position: relative;
-                padding-top: 10px;
-            }
-
-            .sidebar-content {
-                display: block !important;
-                transition: all 0.3s ease;
-            }
-
-            .sidebar-content.hide {
-                display: none !important;
-            }
-
-            .character-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            }
-
-            .character-card {
-                height: 220px;
-            }
-
-            .character-name {
-                font-size: 10px;
-            }
-
-            .footer {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .team-picks {
-                margin-top: 10px;
-                width: 100%;
-                justify-content: flex-end;
-            }
+            .mobile-toggle { display: block; position: sticky; top: 0; z-index: 20; }
+            .sidebar { position: relative; padding-top: 10px; }
+            .sidebar-content { display: block !important; transition: all 0.3s ease; }
+            .sidebar-content.hide { display: none !important; }
+            .character-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .character-card { height: 220px; }
+            .character-name { font-size: 10px; }
         }
 
         @media (max-width: 480px) {
-            .character-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .character-card {
-                height: 220px;
-            }
-
-            .content-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .search-bar {
-                width: 100%;
-                max-width: 100%;
-            }
+            .character-grid { grid-template-columns: repeat(2, 1fr); }
+            .character-card { height: 220px; }
+            .content-header { flex-direction: column; align-items: flex-start; }
+            .search-bar { width: 100%; max-width: 100%; }
         }
 
-        .site-footer {
-            text-align: center;
-            padding: 20px 0px 0px 0px;
-            background-color: #0f0c1d;
-            border-top: 1px solid #1a1629;
-        }
-
-        .light-mode .site-footer {
-            background-color: #f5f5f7;
-            border-top-color: #e0e0e0;
-        }
-
-        .footer-logo {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 10px;
-        }
-
-        .footer-copyright {
-            color: #eaeaff;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
-        .light-mode .footer-copyright {
-            color: #666;
-        }
-
-        .button-logo {
-            height: 24px;
-            width: auto;
-            vertical-align: middle;
-        }
-
-        /* Footer container */
         .footer-container {
             max-width: 100%;
-            padding: 20px 20px 13px 20px;
+            padding: 20px 0px 13px 0px;
         }
 
-        /* Midasbuy logo and tagline */
         .midasbuy-logo {
             display: flex;
             align-items: center;
@@ -985,7 +799,6 @@
             color: #ffffff;
         }
 
-        /* Social media section */
         .social-section {
             margin: 25px 0;
         }
@@ -1015,7 +828,6 @@
             height: 20px;
         }
 
-        /* Payment channels section */
         .payment-section {
             margin: 25px 0;
         }
@@ -1055,47 +867,10 @@
         }
 
         @keyframes marquee {
-            0% {
-                transform: translateX(-50%);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-
-            /* Only move to half the width */
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(-50%); }
         }
 
-        /* Contact section */
-        .contact-section {
-            margin: 25px 0;
-        }
-
-        .contact-text {
-            font-size: 12px;
-            margin-bottom: 15px;
-            color: rgb(185, 185, 185);
-        }
-
-        .customer-service-btn {
-            display: inline-flex;
-            align-items: center;
-            background-color: transparent;
-            border: 1px solid #3f475e;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .customer-service-btn img {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-        }
-
-        /* Certification section */
         .certification-section {
             display: flex;
             justify-content: center;
@@ -1103,41 +878,169 @@
             margin: 30px 0 20px;
         }
 
-        .certification-img {
-            height: 40px;
-        }
-
-        /* Footer links */
-        .footer-links {
-            text-align: center;
-            font-size: 12px;
-            color: #8a8d98;
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: #8a8d98;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-
         .footer-copyright {
             text-align: center;
             font-size: 11px;
             color: #8a8d98;
         }
-        .gifting-label{
-            background: rgba(255, 255, 255, 0.2); 
+
+        .gifting-label {
+            background: rgba(255, 255, 255, 0.2);
             padding: 2px 5px;
-            border-radius: 12px; 
+            border-radius: 12px;
             font-size: 11px;
+        }
+
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .testimonial-item {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(45, 40, 66, 0.3);
+            transition: all 0.2s;
+        }
+
+        .light-mode .testimonial-item {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-item:hover {
+            background-color: rgba(138, 110, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .light-mode .testimonial-item:hover {
+            background-color: rgba(138, 110, 255, 0.08);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #8a6eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .testimonial-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #e0d6ff;
+        }
+
+        .light-mode .testimonial-name {
+            color: #444;
+        }
+
+        .testimonial-purchase {
+            font-size: 12px;
+            color: #b8a9ff;
+            opacity: 0.8;
+        }
+
+        .light-mode .testimonial-purchase {
+            color: #666;
+        }
+
+        .testimonial-rating {
+            color: gold;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .testimonial-text {
+            font-size: 14px;
+            color: #b8a9ff;
+            line-height: 1.5;
+        }
+
+        .light-mode .testimonial-text {
+            color: #666;
+        }
+
+        .testimonial-date {
+            font-size: 12px;
+            color: #b8a9ff;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        .light-mode .testimonial-date {
+            color: #666;
+        }
+
+        .featured-testimonial {
+            border: 2px solid #8a6eff;
+            position: relative;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background-color: #8a6eff;
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        .button-logo{
+            width: auto;
+            height: 24px;
+        }
+        
+        .tooltip-container {
+            display: inline-block;
+            position: relative;
+            margin-right: 6px;
+        }
+
+        .tooltip-btn {
+            background: none;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: 120%; /* position below the button */
+            left: 0;   /* align to the left edge of the button */
+            background-color: #333;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+        max-width: 500px;
+        min-width: 200px;
+            white-space: normal;
+            word-wrap: break-word;
+            z-index: 100;
+            font-size: 12px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <button class="mobile-toggle" onclick="toggleSidebar()">
                 <img src="https://i.ibb.co/9mBD0Gjg/clydelogo.png" alt="ClydeShop" class="button-logo">
@@ -1145,7 +1048,8 @@
             <div class="sidebar-content">
                 <div class="sidebar-tabs">
                     <div class="sidebar-tab active" data-tab="team">Home</div>
-                    <div class="sidebar-tab" data-tab="shop">price guide</div>
+                    <div class="sidebar-tab" data-tab="shop">Price Guide</div>
+                    <!--<div class="sidebar-tab" data-tab="reviews">Reviews</div>-->
                 </div>
 
                 <div class="sidebar-panel active" id="team-panel">
@@ -1153,51 +1057,35 @@
                         <div class="map-subtitle">via <span class="gifting-label"> GIFTING</span></div>
                         <div class="map-title">CLYDESHOP</div>
                         <div class="map-score">
-                            <img src="https://ugc.production.linktr.ee/7f03b3b1-db44-47c5-9b10-31b01468d2c8_tyhjyt1.png?io=true&size=avatar-v3_0"
-                                alt="ClydeShop Logo" style="width: 100%; height: auto; display: block;">
+                            <img src="https://ugc.production.linktr.ee/7f03b3b1-db44-47c5-9b10-31b01468d2c8_tyhjyt1.png?io=true&size=avatar-v3_0" alt="ClydeShop Logo" style="width: 100%; height: auto; display: block;">
                         </div>
                     </div>
                     <div class="players-container">
                         <div class="player" onclick="setActivePlayer(this, 'premium')">
-                            <div class="player-avatar"
-                                style="display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                                👑
-                            </div>
+                            <div class="player-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">👑</div>
                             <div class="player-info">
-                                <div class="player-name"> Premium Skins</div>
+                                <div class="player-name">Premium Skins</div>
                                 <div class="player-role">LYN2025 • LEGEND • VALENTINE • LIMITED</div>
                             </div>
                         </div>
-
                         <div class="player" onclick="setActivePlayer(this, 'epic')">
-                            <div class="player-avatar"
-                                style="display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                                ⚔️
-                            </div>
+                            <div class="player-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">⚔️</div>
                             <div class="player-info">
-                                <div class="player-name"> Epic Skins</div>
+                                <div class="player-name">Epic Skins</div>
                                 <div class="player-role">EPIC</div>
                             </div>
                         </div>
-
                         <div class="player" onclick="setActivePlayer(this, 'rare')">
-                            <div class="player-avatar"
-                                style="display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                                🥇
-                            </div>
+                            <div class="player-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">🥇</div>
                             <div class="player-info">
-                                <div class="player-name"> Rare & Champion Skins</div>
+                                <div class="player-name">Rare & Champion Skins</div>
                                 <div class="player-role">RARE • CHAMPION2024</div>
                             </div>
                         </div>
-
                         <div class="player player-active" onclick="setActivePlayer(this, 'beginner')">
-                            <div class="player-avatar"
-                                style="display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                                🛡️
-                            </div>
+                            <div class="player-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">🛡️</div>
                             <div class="player-info">
-                                <div class="player-name"> Beginner Skins</div>
+                                <div class="player-name">Beginner Skins</div>
                                 <div class="player-role">NORMAL</div>
                             </div>
                         </div>
@@ -1207,7 +1095,14 @@
                 <div class="sidebar-panel" id="shop-panel">
                     <div class="shop-menu">
                         <div class="shop-category" onclick="toggleCategory(this)">
-                            Premium Skins <span>▼</span>
+                            <div class="tooltip-container" onclick="event.stopPropagation(); toggleTooltip('premiumTooltip')">
+                                <button class="tooltip-btn">?</button>
+                                <div id="premiumTooltip" class="tooltip">
+                        Get Legend, Valentine, KIC2023, and Limited skins for ₱780.00 pesos. Each skin comes with a FREE custom button, and you can choose from a variety of designs: Limited, Lyn2025, Lyn2024, Legend, ShanHai, Mythic, KIC2023, 100star, Magic, Valentine, and Blessed.
+                                </div>
+                            </div>
+                            Premium Skins 
+                            <span>▼</span>
                         </div>
                         <div class="shop-items">
                             <div class="shop-item">
@@ -1253,9 +1148,15 @@
                                 <p>w/ custom button</p>
                             </div>
                         </div>
-
                         <div class="shop-category" onclick="toggleCategory(this)">
-                            Epic & Tournament Skins <span>▼</span>
+                            <div class="tooltip-container" onclick="event.stopPropagation(); toggleTooltip('epicTooltip')">
+                                <button class="tooltip-btn">?</button>
+                                <div id="epicTooltip" class="tooltip">
+                        The Epic skins and Limited skin for ₱410.00 pesos include a custom button! You can select from options like Epic, Limited, ShanHai, Fox Spirit Matchmaker, and Magic.
+                                </div>
+                            </div>
+                            Epic & Tournament Skins 
+                            <span>▼</span>
                         </div>
                         <div class="shop-items">
                             <div class="shop-item">
@@ -1292,15 +1193,14 @@
                 </div>
             </div>
         </div>
-        <!-- Main Content -->
+
         <div class="content">
             <div class="content-header-container">
                 <div class="content-header">
                     <div class="content-title">Beginner Hero Skins</div>
                     <div class="search-bar">
                         <div class="search-icon">🔍</div>
-                        <input type="text" id="hero-search" placeholder="Search hero skin name..."
-                            oninput="searchHeroes()">
+                        <input type="text" id="hero-search" placeholder="Search hero skin name..." oninput="searchHeroes()">
                     </div>
                     <div class="filter-options">
                         <div class="filter-option active" onclick="setActiveFilter(this, 'all')">All</div>
@@ -1310,61 +1210,41 @@
             </div>
             <div class="content-scrollable">
                 <div class="character-grid" id="character-grid">
-                    <!-- Character cards will be dynamically inserted here -->
+                    <!-- Character cards or testimonials will be dynamically inserted here -->
                 </div>
                 <div class="footer-container">
-                    <!-- Midasbuy logo and tagline -->
                     <div class="midasbuy-logo">
                         <img src="https://i.ibb.co/9mBD0Gjg/clydelogo.png" alt="Midasbuy">
                         <div class="midasbuy-tagline">Safe and simple skin purchases through gifting.</div>
                     </div>
-                    <!-- Social media section -->
                     <div class="social-section">
                         <div class="section-title">Follow us on</div>
                         <div class="social-icons">
-                            <a href="https://www.facebook.com/clybustamante" target="_blank" rel="noopener noreferrer">
+                            <a href="https://web.facebook.com/profile.php?id=61574860661346" target="_blank" rel="noopener noreferrer">
                                 <div class="social-icon facebook">
-                                    <img src="https://cdn.midasbuy.com/oversea_web/static/images/footer/footer-fb-new.png"
-                                        alt="Facebook">
+                                    <img src="https://cdn.midasbuy.com/oversea_web/static/images/footer/footer-fb-new.png" alt="Facebook">
                                 </div>
                             </a>
-
                         </div>
                     </div>
-
-                    <!-- Payment channels section with seamless infinite marquee -->
                     <div class="payment-section">
                         <div class="section-title">Clydeshop Supports Payment Channels</div>
                         <div class="payment-marquee-container">
                             <div class="payment-marquee">
-                                <!-- First set of icons -->
                                 <div class="payment-icons">
-                                    <div class="payment-icon"><img
-                                            src="https://1000logos.net/wp-content/uploads/2023/05/GCash-Logo.png"
-                                            alt="Gcash"></div>
-                                    <div class="payment-icon"><img
-                                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Maya_logo.svg/2560px-Maya_logo.svg.png"
-                                            alt="Maya"></div>
+                                    <div class="payment-icon"><img src="https://1000logos.net/wp-content/uploads/2023/05/GCash-Logo.png" alt="Gcash"></div>
+                                    <div class="payment-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Maya_logo.svg/2560px-Maya_logo.svg.png" alt="Maya"></div>
                                 </div>
-                                <!-- Second set of icons (exact duplicate for seamless loop) -->
                                 <div class="payment-icons">
-                                    <div class="payment-icon"><img
-                                            src="https://1000logos.net/wp-content/uploads/2023/05/GCash-Logo.png"
-                                            alt="Gcash"></div>
-                                    <div class="payment-icon"><img
-                                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Maya_logo.svg/2560px-Maya_logo.svg.png"
-                                            alt="Maya"></div>
+                                    <div class="payment-icon"><img src="https://1000logos.net/wp-content/uploads/2023/05/GCash-Logo.png" alt="Gcash"></div>
+                                    <div class="payment-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Maya_logo.svg/2560px-Maya_logo.svg.png" alt="Maya"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Certification section -->
                     <div class="certification-section">
-                        <img src="https://ugc.production.linktr.ee/7f03b3b1-db44-47c5-9b10-31b01468d2c8_tyhjyt1.png?io=true&size=avatar-v3_0"
-                            alt="ClydeShop Logo" style="width: auto; height: 40px; display: block;">
+                        <img src="https://ugc.production.linktr.ee/7f03b3b1-db44-47c5-9b10-31b01468d2c8_tyhjyt1.png?io=true&size=avatar-v3_0" alt="ClydeShop Logo" style="width: auto; height: 40px; display: block;">
                     </div>
-
                     <div class="footer-copyright">
                         © 2025 Clydeshop. All Rights Reserved.
                     </div>
@@ -1373,264 +1253,257 @@
         </div>
     </div>
 
-    <!-- Theme toggle button -->
-    <!-- <button class="theme-toggle" onclick="toggleTheme()">🌓</button> -->
-
     <script>
-        // Skin data with popularity indicators
         const skinData = {
             premium: [
-                { hero: "Arthor", name: "Cat and Mouse", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTggzuqPe2ijMQOiorqdOUhYlCHRDF0VS9uuIGSV26tOZgSQ4XFKHZL81Je&s=10" },
-                { hero: "Zilong", name: "Starlight Spear", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU56uww6RJGSl4GC2v_KqknucZNRuDYx6oMvEFeA_ZM1rhECu5d8x3h70&s=10" },
-                { hero: "Allain", name: "Arctic Predator", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1e5nHOtR_GzTU-yY9EaLBnc0ilDYiykbbD8VVqHns6sYSNFHwwXyXSRg&s=10" },
-                { hero: "Dian Wei", name: "Warfire", price: "₱730.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/4c/Dian_Wei_%28Warfire%29.jpg/revision/latest?cb=20250122021259" },
-                { hero: "Hou Yi", name: "Starshooter", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGT1L1XOMnTGDOHicOZTX5K1Xt5YpEMOPRBf_P3etkUQ4RVcBK4JF0PlAs&s=10" },
-                { hero: "Butterfly", name: "Sunken Fable", price: "₱730.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/b/b0/Butterfly_%28Sunken_Fable%29.jpg/revision/latest?cb=20250102044332" },
-                { hero: "Di Renjie", name: "Temporal Warrior", price: "₱730.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/88/Di_Renjie_%28Temporal_Warrior%29.jpg/revision/latest?cb=20250113083540" },
-                { hero: "Yao", name: "Eagle General", price: "₱730.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/c/c0/Yao_%28Eagle_General%29.jpg/revision/latest?cb=20250114051944" },
-                { hero: "Wukong", name: "Hellfire", price: "₱730.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/9/94/Wukong_%28Hellfire%29.jpg/revision/latest?cb=20241112081504" },
-                { hero: "Sun Ce", name: "Doomsday Mecha", price: "₱730.00", image: "https://cdn.midasbuy.com/public/e0c5b704b9d8d5add80bb0e4e9748414.png" },
-                { hero: "Wukong", name: "Crimson Zero", price: "₱730.00", image: "https://cdn.midasbuy.com/public/06098b66ea0499302c7ef9f7ad9ea4ff.png" },
-                { hero: "Musashi", name: "Underworld Sentry", price: "₱730.00", image: "https://cdn.midasbuy.com/public/0f8cab91bea80c8ac846d79f43898a2d.png" },
-                { hero: "Angela", name: "Cat and Mouse", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTggzuqPe2ijMQOiorqdOUhYlCHRDF0VS9uuIGSV26tOZgSQ4XFKHZL81Je&s=10" },
-                { hero: "Lam", name: "T-rex", price: "₱730.00", image: "https://cdn.midasbuy.com/public/384c85b46e0ea04b46630d61a3a41445.png" },
-                { hero: "Luna", name: "Hoarfrost Maiden", price: "₱730.00", image: "https://cdn.midasbuy.com/public/bc0bab7cf254069cf5e5940d02235ecf.png" },
-                { hero: "Li Xin", name: "Heaven and Hell", price: "₱730.00", image: "https://cdn.midasbuy.com/public/e0d246cdab4f48bef40d454a337cf7a9.png" },
-                { hero: "Consort Yu", name: "Wings of Freedom", price: "₱730.00", image: "https://cdn.midasbuy.com/public/6bdda6943d59e17a8eda9b2903ddd4b0.png" },
+                {hero: "Arthor", name: "Cat and Mouse", price: "₱730.00", image: "https://cdn.midasbuy.com/images/ya.53e6f6c3.jpg"},            
+                {hero: "Zilong", name: "Starlight Spear", price: "₱730.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018528.62d5e2cb.jpg"},            
+                {hero: "Allain", name: "Arctic Predator", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1e5nHOtR_GzTU-yY9EaLBnc0ilDYiykbbD8VVqHns6sYSNFHwwXyXSRg&s=10"},      
+                {hero: "Dian Wei", name: "Warfire", price: "₱730.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018530.3c0246a1.jpg"},                
+                {hero: "Hou Yi", name: "Starshooter", price: "₱730.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGT1L1XOMnTGDOHicOZTX5K1Xt5YpEMOPRBf_P3etkUQ4RVcBK4JF0PlAs&s=10"},                
+                {hero: "Butterfly", name: "Sunken Fable", price: "₱730.00", image: "https://i.ibb.co/VWqYpdB2/butterfly-sunken-fable.jpg"},                
+                {hero: "Di Renjie", name: "Temporal Warrior", price: "₱730.00", image: "https://i.ibb.co/1fKDYTD2/di-renjie-temporal-warrior.jpg"},                
+                {hero: "Yao", name: "Eagle General", price: "₱730.00", image: "https://cdn.midasbuy.com/images/%E6%9B%9C-%E4%BA%91%E9%B9%B0%E9%A3%9E%E5%B0%86.23ebc68e.jpg"},                
+                {hero: "Wukong", name: "Hellfire", price: "₱730.00", image: "https://i.ibb.co/ch0kcxWd/wukong-hellfire.jpg"},                                    
+                {hero: "Sun Ce", name: "Doomsday Mecha", price: "₱730.00", image: "https://cdn.midasbuy.com/public/e0c5b704b9d8d5add80bb0e4e9748414.png"},
+                {hero: "Wukong", name: "Crimson Zero", price: "₱730.00", image: "https://cdn.midasbuy.com/public/06098b66ea0499302c7ef9f7ad9ea4ff.png" },
+                {hero: "Musashi", name: "Underworld Sentry", price: "₱730.00", image: "https://cdn.midasbuy.com/public/0f8cab91bea80c8ac846d79f43898a2d.png"},
+                {hero: "Angela", name: "Cat and Mouse", price: "₱730.00", image: "https://cdn.midasbuy.com/images/an.551cf6d2.jpg"},                
+                {hero: "Lam", name: "T-rex", price: "₱730.00", image: "https://cdn.midasbuy.com/public/384c85b46e0ea04b46630d61a3a41445.png"},
+                {hero: "Luna", name: "Hoarfrost Maiden", price: "₱730.00", image: "https://cdn.midasbuy.com/public/bc0bab7cf254069cf5e5940d02235ecf.png" },
+                {hero: "Li Xin", name: "Heaven and Hell", price: "₱730.00", image: "https://cdn.midasbuy.com/public/e0d246cdab4f48bef40d454a337cf7a9.png" },
+                {hero: "Consort Yu", name: "Wings of Freedom", price: "₱730.00", image: "https://cdn.midasbuy.com/public/6bdda6943d59e17a8eda9b2903ddd4b0.png" },
             ],
             epic: [
-                { hero: "Li Bai", name: "Vulpes Aeternus", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/4d/Li_Bai_%28Vulpes_Aeternus%29.jpg/revision/latest?cb=20250203041810" },
-                { hero: "Sakeer", name: "Starlit Voyage", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/b/b4/Sakeer_%28Starlit_Voyage%29.jpg/revision/latest?cb=20250317073029" },
-                { hero: "Shouyue", name: "Agent Ghostshade", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/e/ef/Shouyue_%28Agent_Ghostshade%29.jpg/revision/latest?cb=20250227074201" },
-                { hero: "Cai Yan", name: "Christmas Miracle", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/2/26/Cai_Yan_%28Christmas_Miracle%29.jpg/revision/latest?cb=20250203093933" },
-                { hero: "Mi Yue", name: "Shadow Play", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/9/9e/Mi_Yue_%28Shadow_Play%29.jpg/revision/latest?cb=20250203041055" },
-                { hero: "Gan & Mo", name: "Frostlove Dance", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/49/Gan_%26_Mo_%28Frostlove_Dance%29.jpg/revision/latest?cb=20250103075425" },
-                { hero: "Yang Jian", name: "Aces: Enlightened", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/5c/Yang_Jian_%28Aces_-_Enlightened%29.jpg/revision/latest?cb=20250115063329" },
-                { hero: "Liang", name: "Maven Coach", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/5b/Liang_%28Maven_Coach%29.jpg/revision/latest?cb=20250115080832" },
-                { hero: "Zhuangzi", name: "Inkscape", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/0/0a/Zhuangzi_%28Inkscape%29.jpg/revision/latest?cb=20250109094341" },
-                { hero: "Lady Zhen", name: "Peony Romantic", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/9/9d/Lady_Zhen_%28Peony_Romantic%29.jpg/revision/latest?cb=20250122041956" },
-                { hero: "Sun Bin", name: "Sirius Wonderboy", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/e/e4/Sun_Bin_%28Sirius_Wonderboy%29.jpg/revision/latest?cb=20250122065505" },
-                { hero: "Nezha", name: "Interstellar Wings", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/c/c6/Nezha_%28Interstellar_Wings%29.jpg/revision/latest?cb=20241215080045" },
-                { hero: "Diaochan", name: "Interstellar Diva", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/f/f9/Diaochan_%28Interstellar_Diva%29.jpg/revision/latest?cb=20250203132856" },
-                { hero: "Luban No.7", name: "Ping Pong Prodigy", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/d/d3/Luban_No.7_%28Ping_Pong_Prodigy%29.jpg/revision/latest?cb=20250205022849" },
-                { hero: "Allain", name: "Heavenblade", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/f/fc/Allain_%28Heavenblade%29.jpg/revision/latest?cb=20250106020409" },
-                { hero: "Shangguan", name: "Sirius Artist", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/a/a4/Shangguan_%28Sirius_Artist%29.jpg/revision/latest?cb=20250116090305" },
-                { hero: "Alessio", name: "Doomsday Mecha", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/b/b9/Alessio_%28Doomsday_Mecha%29.jpg/revision/latest?cb=20250106014153" },
-                { hero: "Hou Yi", name: "Glorious Dawn", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/48/Hou_Yi_%28Glorious_Dawn%29.jpg/revision/latest?cb=20241107042402" },
-                { hero: "Lian Po", name: "Nether Soul", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/c/c0/Lian_Po_%28Nether_Soul%29.jpg/revision/latest?cb=20250115103714" },
-                { hero: "Kaizer", name: "Dawn Guardian", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/3/37/Kaizer_%28Dawn_Guardian%29.jpg/revision/latest?cb=20250124045010" },
-                { hero: "Diaochan", name: "Fiery Spirit", price: "₱385.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/87/Diaochan_%28Fiery_Spirit%29.jpg/revision/latest?cb=20250203132905" },
-                { hero: "Da Qiao", name: "Pet Diaries", price: "₱385.00", image: "https://cdn.midasbuy.com/public/af26359e0962b91d4da3d52eee901285.png" },
-                { hero: "Cai Yan", name: "Usagimaru", price: "₱385.00", image: "https://cdn.midasbuy.com/public/0fa1aac81deeac3ede1e977997b7903c.png" },
-                { hero: "Zilong", name: "Future Era ", price: "₱385.00", image: "https://cdn.midasbuy.com/public/ac41d50110b632df25701a5643bc5d43.png" },
-                { hero: "Angela", name: "Manga Crossover", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9ea5fd53a404d3cc8bf822c8f9fcb601.png" },
-                { hero: "Erin", name: "Ballerina", price: "₱385.00", image: "https://cdn.midasbuy.com/public/0570010e3f8af2da7eb2b88d6596f10f.png" },
-                { hero: "Marco Polo", name: "Interstellar Ranger", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E9%A9%AC%E5%8F%AF%E6%B3%A2%E7%BD%97-%E9%80%90%E6%A2%A6%E4%B9%8B%E6%98%9F.44730e1e.jpg" },
-                { hero: "Musashi", name: "Oni Samurai", price: "₱385.00", image: "https://cdn.midasbuy.com/public/d3a0360a30e73f3d70630d444cbe571b.png" },
-                { hero: "Dun", name: "Wave Rider", price: "₱385.00", image: "https://cdn.midasbuy.com/public/84a7348ca4f6fd5b182683881999457b.png" },
-                { hero: "Gao", name: "Aces: Soundwave", price: "₱385.00", image: "https://cdn.midasbuy.com/public/7ae5636b2629d4cdec5540cce4b93710.png" },
-                { hero: "Milady", name: "Perfect Vacation", price: "₱385.00", image: "https://cdn.midasbuy.com/public/40530d61c47b7f1d9955447f128329b7.png" },
-                { hero: "Sima Yi", name: "Dark Magician", price: "₱385.00", image: "https://cdn.midasbuy.com/public/8bded5b144e86e1c7c80cfd085790507.png" },
-                { hero: "Shouyue", name: "True Hertz", price: "₱385.00", image: "https://cdn.midasbuy.com/public/03b2705991c23ab55c9b0e726637dd7f.png" },
-                { hero: "Lu Bu", name: "Doomsday Mecha", price: "₱385.00", image: "https://cdn.midasbuy.com/public/2e55baf33a658542f65908f1a999e670.png" },
-                { hero: "Lady Zhen", name: "Snow Waltz", price: "₱385.00", image: "https://cdn.midasbuy.com/public/555ead7e26e213fd6562cdf565b2f0b6.png" },
-                { hero: "Sun Ce", name: "Pet Diaries", price: "₱385.00", image: "https://cdn.midasbuy.com/public/f9ec59566476a46996d39dcd66917b6e.png" },
-                { hero: "Charlotte", name: "Eternal Daylight", price: "₱385.00", image: "https://cdn.midasbuy.com/public/19a1d6b56591caa8a28752b0685d68b5.png" },
-                { hero: "Ukyo Tachibana", name: "Asura", price: "₱385.00", image: "https://cdn.midasbuy.com/public/6159ac88e832639a9e5b85fd4f0ceef3.png" },
-                { hero: "Prince of Lanling", name: "Shadow Predator", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9b8b3fa11ed773b473950d798c352fe6.png" },
-                { hero: "Lady Sun", name: "Fruit Sweetheart", price: "₱385.00", image: "https://cdn.midasbuy.com/public/81842cfc6d6d96e8bc09a54c7110a731.png" },
-                { hero: "Nakoruru", name: "Firefly Maiden", price: "₱385.00", image: "https://cdn.midasbuy.com/images/maiden.d6d8fccf.png" },
-                { hero: "Mai Shiranui", name: "Feline Whisperer", price: "₱385.00", image: "https://cdn.midasbuy.com/images/whisperer.f40d1fe4.png" },
-                { hero: "Kongming", name: "Golden Ratio", price: "₱385.00", image: "https://cdn.midasbuy.com/public/f5a1274e16629d3318a9635863c995b5.png" },
-                { hero: "Daju", name: "Maid Cafe", price: "₱385.00", image: "https://cdn.midasbuy.com/public/3c1d82c0100185a97292ffcc6af7b3bc.png" },
-                { hero: "Muzi", name: "Metal Storm", price: "₱385.00", image: "https://cdn.midasbuy.com/public/2c396945a577cdaa60ffd95368140d83.png" },
-                { hero: "Cai Yan", name: "Cheerleading Captain", price: "₱385.00", image: "https://cdn.midasbuy.com/public/744600cbdaf58d12c952f51723d15d1b.png" },
-                { hero: "Mulan", name: "Dragon Hunter", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9c77b0741e46e390b6d7e59bdc6b172a.png" },
-                { hero: "Lam", name: "Bolt Hunter", price: "₱385.00", image: "https://cdn.midasbuy.com/public/e99dfdd07c5e9580fed7f27adb5ac287.png" },
-                { hero: "Kui", name: "Playground Sentry", price: "₱385.00", image: "https://cdn.midasbuy.com/public/3ebae24c80fdc42bfda4a9a25e5d39e3.png" },
-                { hero: "Fang", name: "Summer Waves", price: "₱385.00", image: "https://cdn.midasbuy.com/images/midas_oversea/bb9591a184fcfc43e755b323779df6ba.png" },
+                {hero: "Li Bai", name: "Vulpes Aeternus", price: "₱385.00", image: "https://i.ibb.co/TB4S9fpb/Vulpes-Aeternus.jpg"},            
+                {hero: "Sakeer", name: "Starlit Voyage", price: "₱385.00", image: "https://cdn.midasbuy.com/images/S-%E6%A1%91%E5%90%AF-%E7%9B%B4%E5%94%AE.82c50408.jpg"},               
+                {hero: "Shouyue", name: "Agent Ghostshade", price: "₱385.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018886.6b107c0d.jpg"},               
+                {hero: "Cai Yan", name: "Christmas Miracle", price: "₱385.00", image: "https://i.ibb.co/FbLV2kf6/Christmas-Miracle.jpg"},               
+                {hero: "Mi Yue", name: "Shadow Play", price: "₱385.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018531.62bc5f36.jpg"},            
+                {hero: "Gan & Mo", name: "Frostlove Dance", price: "₱385.00", image: "https://i.ibb.co/gL3ttm95/Frostlove-Dance.jpg"},               
+                {hero: "Yang Jian", name: "Aces: Enlightened", price: "₱385.00", image: "https://i.ibb.co/LdPJmxt3/Aces-Enlightened.jpg"},               
+                {hero: "Liang", name: "Maven Coach", price: "₱385.00", image: "https://i.ibb.co/4nx8Gn3N/Maven-Coach.jpg"},               
+                {hero: "Zhuangzi", name: "Inkscape", price: "₱385.00", image: "https://i.ibb.co/qMC41YxD/Inkscape.jpg"},            
+                {hero: "Lady Zhen", name: "Peony Romantic", price: "₱385.00", image: "https://i.ibb.co/Tq4xFg9G/Peony-Romantic.jpg"},               
+                {hero: "Sun Bin", name: "Sirius Wonderboy", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E5%AD%99%E8%86%91-%E5%A4%A9%E7%8B%BC%E8%BF%90%E7%AE%97%E8%80%85.38c0cd73.jpg"},               
+                {hero: "Nezha", name: "Interstellar Wings", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E5%93%AA%E5%90%92-%E9%80%90%E6%A2%A6%E4%B9%8B%E7%BF%BC%20.d7ce23c4.jpg"},               
+                {hero: "Diaochan", name: "Interstellar Diva", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E8%B2%82%E8%9D%89-%E9%80%90%E6%A2%A6%E4%B9%8B%E9%9F%B3.6903df4b.jpg"},               
+                {hero: "Luban No.7", name: "Ping Pong Prodigy", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E9%B2%81%E7%8F%AD-%E4%B9%92%E4%B9%92%E5%B0%8F%E5%B0%86.a6475fed.jpg"},               
+                {hero: "Allain", name: "Heavenblade", price: "₱385.00", image: "https://i.ibb.co/rGBfyvMX/Heavenblade.jpg"},                 
+                {hero: "Shangguan", name: "Sirius Artist", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E4%B8%8A%E5%AE%98%E5%A9%89%E5%84%BF-%E5%A4%A9%E7%8B%BC%E7%BB%98%E6%A2%A6%E8%80%85.41c015f0.jpg"},               
+                {hero: "Alessio", name: "Doomsday Mecha", price: "₱385.00", image: "https://i.ibb.co/rGj7b1Q8/Alessio-Doomsday-Mecha.jpg"},               
+                {hero: "Hou Yi", name: "Glorious Dawn", price: "₱385.00", image: "https://i.ibb.co/CKQC35Gy/Hou-Yi-Glorious-Dawn.jpg"},                 
+                {hero: "Lian Po", name: "Nether Soul", price: "₱385.00", image: "https://i.ibb.co/p617fHH9/Lian-Po-Nether-Soul.jpg"},               
+                {hero: "Kaizer", name: "Dawn Guardian", price: "₱385.00", image: "https://i.ibb.co/B578vwHY/Kaizer-Dawn-Guardian.jpg"},               
+                {hero: "Diaochan", name: "Fiery Spirit", price: "₱385.00", image: "https://i.ibb.co/JWgqxytw/fiery-spirit-diaochan.jpg"},               
+                {hero: "Da Qiao", name: "Pet Diaries", price: "₱385.00", image: "https://cdn.midasbuy.com/public/af26359e0962b91d4da3d52eee901285.png"},
+                {hero: "Cai Yan", name: "Usagimaru", price: "₱385.00", image: "https://cdn.midasbuy.com/public/0fa1aac81deeac3ede1e977997b7903c.png" },
+                {hero: "Zilong", name: "Future Era ", price: "₱385.00", image: "https://cdn.midasbuy.com/public/ac41d50110b632df25701a5643bc5d43.png" },
+                {hero: "Angela", name: "Manga Crossover", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9ea5fd53a404d3cc8bf822c8f9fcb601.png" },
+                {hero: "Erin", name: "Ballerina", price: "₱385.00", image: "https://cdn.midasbuy.com/public/0570010e3f8af2da7eb2b88d6596f10f.png" },
+                {hero: "Marco Polo", name: "Interstellar Ranger", price: "₱385.00", image: "https://cdn.midasbuy.com/images/%E9%A9%AC%E5%8F%AF%E6%B3%A2%E7%BD%97-%E9%80%90%E6%A2%A6%E4%B9%8B%E6%98%9F.44730e1e.jpg" },
+                {hero: "Musashi", name: "Oni Samurai", price: "₱385.00", image: "https://cdn.midasbuy.com/public/d3a0360a30e73f3d70630d444cbe571b.png" },
+                {hero: "Dun", name: "Wave Rider", price: "₱385.00", image: "https://cdn.midasbuy.com/public/84a7348ca4f6fd5b182683881999457b.png" },
+                {hero: "Gao", name: "Aces: Soundwave", price: "₱385.00", image: "https://cdn.midasbuy.com/public/7ae5636b2629d4cdec5540cce4b93710.png" },
+                {hero: "Milady", name: "Perfect Vacation", price: "₱385.00", image: "https://cdn.midasbuy.com/public/40530d61c47b7f1d9955447f128329b7.png" },
+                {hero: "Sima Yi", name: "Dark Magician", price: "₱385.00", image: "https://cdn.midasbuy.com/public/8bded5b144e86e1c7c80cfd085790507.png" },
+                {hero: "Shouyue", name: "True Hertz", price: "₱385.00", image: "https://cdn.midasbuy.com/public/03b2705991c23ab55c9b0e726637dd7f.png" },
+                {hero: "Lu Bu", name: "Doomsday Mecha", price: "₱385.00", image: "https://cdn.midasbuy.com/public/2e55baf33a658542f65908f1a999e670.png" },
+                {hero: "Lady Zhen", name: "Snow Waltz", price: "₱385.00", image: "https://cdn.midasbuy.com/public/555ead7e26e213fd6562cdf565b2f0b6.png" },
+                {hero: "Sun Ce", name: "Pet Diaries", price: "₱385.00", image: "https://cdn.midasbuy.com/public/f9ec59566476a46996d39dcd66917b6e.png" },
+                {hero: "Charlotte", name: "Eternal Daylight", price: "₱385.00", image: "https://cdn.midasbuy.com/public/19a1d6b56591caa8a28752b0685d68b5.png" },
+                {hero: "Ukyo Tachibana", name: "Asura", price: "₱385.00", image: "https://cdn.midasbuy.com/public/6159ac88e832639a9e5b85fd4f0ceef3.png" },
+                {hero: "Prince of Lanling", name: "Shadow Predator", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9b8b3fa11ed773b473950d798c352fe6.png" },
+                {hero: "Lady Sun", name: "Fruit Sweetheart", price: "₱385.00", image: "https://cdn.midasbuy.com/public/81842cfc6d6d96e8bc09a54c7110a731.png" },
+                {hero: "Nakoruru", name: "Firefly Maiden", price: "₱385.00", image: "https://cdn.midasbuy.com/images/maiden.d6d8fccf.png" },
+                {hero: "Mai Shiranui", name: "Feline Whisperer", price: "₱385.00", image: "https://cdn.midasbuy.com/images/whisperer.f40d1fe4.png" },
+                {hero: "Kongming", name: "Golden Ratio", price: "₱385.00", image: "https://cdn.midasbuy.com/public/f5a1274e16629d3318a9635863c995b5.png" },
+                {hero: "Daju", name: "Maid Cafe", price: "₱385.00", image: "https://cdn.midasbuy.com/public/3c1d82c0100185a97292ffcc6af7b3bc.png" },
+                {hero: "Muzi", name: "Metal Storm", price: "₱385.00", image: "https://cdn.midasbuy.com/public/2c396945a577cdaa60ffd95368140d83.png" },
+                {hero: "Cai Yan", name: "Cheerleading Captain", price: "₱385.00", image: "https://cdn.midasbuy.com/public/744600cbdaf58d12c952f51723d15d1b.png" },
+                {hero: "Mulan", name: "Dragon Hunter", price: "₱385.00", image: "https://cdn.midasbuy.com/public/9c77b0741e46e390b6d7e59bdc6b172a.png" },
+                {hero: "Lam", name: "Bolt Hunter", price: "₱385.00", image: "https://cdn.midasbuy.com/public/e99dfdd07c5e9580fed7f27adb5ac287.png" },
+                {hero: "Kui", name: "Playground Sentry", price: "₱385.00", image: "https://cdn.midasbuy.com/public/3ebae24c80fdc42bfda4a9a25e5d39e3.png" },
+                {hero: "Fang", name: "Summer Waves", price: "₱385.00", image: "https://cdn.midasbuy.com/images/midas_oversea/bb9591a184fcfc43e755b323779df6ba.png" },
             ],
             rare: [
-                { hero: "Augran", name: "Lord of Shadows", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/b/bf/Augran_%28Lord_of_Shadows%29.jpg/revision/latest?cb=20250103032422" },
-                { hero: "Luara", name: "Inferno Spectacle", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/9/9b/Luara_%28Inferno_Spectacle%29.jpg/revision/latest?cb=20250225024815" },
-                { hero: "Sun Bin", name: "Return of Dreams", price: "₱210.00", image: "https://i.ibb.co/cKLWw7Z0/return-of-dreams-yao.jpg" },
-                { hero: "Ata", name: "Tales of Victory", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/1/15/Ata_%28Tales_of_Victory%29.jpg/revision/latest?cb=20250115100819" },
-                { hero: "Mi Yue", name: "Queen of Hearts", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/c/c8/Mi_Yue_%28Queen_of_Hearts%29.jpg/revision/latest?cb=20241230070722" },
-                { hero: "Di Renjie", name: "Onmyoji", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/2/28/Di_Renjie_%28Onmyoji%29.jpg/revision/latest?cb=20250113083548" },
-                { hero: "Fuzi", name: "Noodle Sage", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/9/9b/Fuzi_%28Noodle_Sage%29.jpg/revision/latest?cb=20241230083017" },
-                { hero: "Fang", name: "Alsahraa Wayfarer", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/5a/Fang_%28Alsahraa_Wayfarer%29.jpg/revision/latest?cb=20250116033413" },
-                { hero: "Kui", name: "Exorcising Ritual", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/55/Kui_%28Exorcising_Ritual%29.jpg/revision/latest?cb=20250116041612" },
-                { hero: "Ziya", name: "Envoy of Flame", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/1/1a/Ziya_%28Envoy_of_Flame%29.jpg/revision/latest?cb=20250108083143" },
-                { hero: "Milady", name: "Dragondame", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/f/f9/Milady_%28Dragondame%29.jpg/revision/latest?cb=20241227025008" },
-                { hero: "Erin", name: "Forest Keeper", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/81/Erin_%28Forest_Keeper%29.jpg/revision/latest?cb=20250120021539" },
-                { hero: "Liu Bang", name: "Roaring Blade", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/8c/Liu_Bang_%28Roaring_Blade%29.jpg/revision/latest?cb=20250114081434" },
-                { hero: "Luna", name: "Gothic Rose", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/6/62/Luna_%28Gothic_Rose%29.jpg/revision/latest?cb=20250106030510" },
-                { hero: "Wukong", name: "Gilded King", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/f/f6/Wukong_%28Gilded_King%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250102074141" },
-                { hero: "Alessio", name: "Wildtown Sheriff", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/3/35/Alessio_%28Wildtown_Sheriff%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250106014147" },
-                { hero: "Xiang Yu", name: "Professor  Boombastic", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/4b/Xiang_Yu_%28Professor_Boombastic%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250102082819" },
-                { hero: "Biron", name: "Agent Warshadow", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/85/Biron_%28Agent_Warshadow%29.jpg/revision/latest/scale-to-width-down/1000?cb=20241102085107" },
-                { hero: "Dr Bian", name: "Ruby-Eyed Savior", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/e/e0/Dr_Bian_%28Ruby-Eyed_Savior%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250204104750" },
-                { hero: "Liu Shan", name: "Secret Base", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/6/66/Liu_Shan_%28Secret_Base%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250205044334" },
-                { hero: "Zhuangzi", name: "Natural Scientist", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/8e/Zhuangzi_%28Natural_Scientist%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250109094143" },
-                { hero: "Ming", name: "Heavenly Official", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/5f/Ming_%28Heavenly_Official%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250116073144" },
-                { hero: "Dian Wei", name: "Junkyard Protector", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/4/41/Dian_Wei_%28Junkyard_Protector%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250122021250" },
-                { hero: "Marco Polo", name: "Funky Western", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/3/32/Marco_Polo_%28Funky_Western%29.jpg/revision/latest/scale-to-width-down/1000?cb=20250106024703" },
-                { hero: "Dolia", name: "Shimmering Seas", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/52/Dolia_%28Shimmering_Seas%29.jpg/revision/latest/scale-to-width-down/1000?cb=20241230064404" },
-                { hero: "Zhou Yu", name: "Eclipse Blaze", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/8/8b/Zhou_Yu_%28Eclipse_Blaze%29.jpg/revision/latest?cb=20250115093626" },
-                { hero: "Han Xin", name: "Street Boss", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/f/fe/Han_Xin_%28Street_Boss%29.jpg/revision/latest?cb=20241126040725" },
-                { hero: "Lady Sun", name: "Power of Calm", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/5/51/Lady_Sun_%28Power_of_Calm%29.jpg/revision/latest?cb=20250205025725" },
-                { hero: "Liu Bei", name: "New York Godfather", price: "₱210.00", image: "https://static.wikia.nocookie.net/honor-of-kings/images/3/39/Liu_Bei_%28New_York_Godfather%29.jpg/revision/latest?cb=20250205040647" },
-                { hero: "Angela", name: "Playful Trickster", price: "₱210.00", image: "https://cdn.midasbuy.com/public/3a06d67486fa2179752bad569429ec2d.png" },
-                { hero: "Zilong", name: "White Debonair", price: "₱255.00", image: "https://cdn.midasbuy.com/public/09e0b1e259fad96bbb9cd07668421fc0.png" },
-                { hero: "Allain", name: "Nutcracker Knight", price: "₱210.00", image: "https://cdn.midasbuy.com/public/b5d30be085e99265dc0cdf01d7dfa846.png" },
-                { hero: "Heino", name: "Temporal Agent", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E6%B5%B7%E8%AF%BA-%E6%97%B6%E7%A9%BA%E8%B0%8D%E5%BD%B1.5234ce96.jpg" },
-                { hero: "Mayene", name: "Snackin'", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E5%A7%AC%E5%B0%8F%E6%BB%A1-%E9%9B%B6%E9%A3%9F%E5%A4%A7%E4%BD%9C%E6%88%98.ab1dd5a3.jpg" },
-                { hero: "Dharma", name: "Steampunk Invetor", price: "₱210.00", image: "https://cdn.midasbuy.com/public/303a202b06ac85a04f9d0c63b1aa4ecb.png " },
-                { hero: "Lady Zhen", name: "Flowery Expectations", price: "₱210.00", image: "https://cdn.midasbuy.com/public/e907b7e958b1924ab264cd0f7853114f.png" },
-                { hero: "Lian Po", name: "Eternal Explorer", price: "₱210.00", image: "https://cdn.midasbuy.com/public/e77cf53f334633f9d414a7c2213d85fa.png" },
-                { hero: "Kongming", name: "Power of Control   ", price: "₱210.00", image: "https://cdn.midasbuy.com/public/639dbdc3a1994bce43c6d457e3d5b7bf.png" },
-                { hero: "Li Bai", name: "Power of Precision", price: "₱210.00", image: "https://cdn.midasbuy.com/public/7a8c068981eb6391f3f65bb39b2c8d44.png" },
-                { hero: "Musashi", name: "Spring`s Renewal", price: "₱210.00", image: "https://cdn.midasbuy.com/public/eb169976f2049e7f01f69ad23a04b420.png" },
-                { hero: "Zhang Fei", name: "Blessed Warrior", price: "₱210.00", image: "https://cdn.midasbuy.com/public/92f8f0035dd1d316d3195dbbe505d7cc.png" },
+                {hero: "Augran", name: "Lord of Shadows", price: "₱210.00", image: "https://i.ibb.co/VY2M4kNS/ugran-Lord-of-Shadows.jpg" },            
+                {hero: "Luara", name: "Inferno Spectacle", price: "₱210.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018885.511b90c8.jpg" },             
+                {hero: "Sun Bin", name: "Return of Dreams", price: "₱210.00", image: "https://i.ibb.co/VcKCn0hv/Sun-Bin-Return-of-Dreams.jpg" },             
+                {hero: "Ata", name: "Tales of Victory", price: "₱210.00", image: "https://i.ibb.co/Z6hYMqcm/Ata-Tales-of-Victory.jpg" },             
+                {hero: "Mi Yue", name: "Queen of Hearts", price: "₱210.00", image: "https://i.ibb.co/gMVkGFYn/Mi-Yue-Queen-of-Hearts.jpg" },             
+                {hero: "Di Renjie", name: "Onmyoji", price: "₱210.00", image: "https://i.ibb.co/93ZKmmL9/Di-Renjie-Onmyoji.jpg" },            
+                {hero: "Fuzi", name: "Noodle Sage", price: "₱210.00", image: "https://i.ibb.co/G4mWtSCw/Fuzi-Noodle-Sage.jpg" },             
+                {hero: "Fang", name: "Alsahraa Wayfarer", price: "₱210.00", image: "https://i.ibb.co/JR3L3sXd/Fang-Alsahraa-Wayfarer.jpg" },             
+                {hero: "Kui", name: "Exorcising Ritual", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E9%92%9F%E9%A6%97-%E9%A9%B1%E5%82%A9%E6%AD%A3%E4%BB%AA.ac707887.jpg" },             
+                {hero: "Ziya", name: "Envoy of Flame", price: "₱210.00", image: "https://i.ibb.co/tr8SWV5/Ziya-Envoy-of-Flame.jpg" },                 
+                {hero: "Milady", name: "Dragondame", price: "₱210.00", image: "https://i.ibb.co/xtht4yrc/Milady-Dragondame.jpg" },            
+                {hero: "Erin", name: "Forest Keeper", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E8%89%BE%E7%90%B3-%E5%A5%B3%E6%AD%A6%E7%A5%9E.e665a9d2.jpg" },             
+                {hero: "Liu Bang", name: "Roaring Blade", price: "₱210.00", image: "https://i.ibb.co/CqcgWHs/Liu-Bang-Roaring-Blade.jpg" },             
+                {hero: "Luna", name: "Gothic Rose", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E9%9C%B2%E5%A8%9C-%E5%93%A5%E7%89%B9%E7%8E%AB%E7%91%B0.49299203.jpg" },             
+                {hero: "Wukong", name: "Gilded King", price: "₱210.00", image: "https://i.ibb.co/dw0F6vHJ/Wukong-Gilded-King.jpg" },                    
+                {hero: "Alessio", name: "Wildtown Sheriff", price: "₱210.00", image: "https://i.ibb.co/5x2pXFG1/Alessio-Wildtown-Sheriff.jpg" },             
+                {hero: "Xiang Yu", name: "Professor  Boombastic", price: "₱210.00", image: "https://i.ibb.co/7JC38m7J/Xiang-Yu-Professor-Boombastic.jpg" },             
+                {hero: "Biron", name: "Agent Warshadow", price: "₱210.00", image: "https://i.ibb.co/ktNcKHq/Biron-Agent-Warshadow.jpg" },             
+                {hero: "Dr Bian", name: "Ruby-Eyed Savior", price: "₱210.00", image: "https://i.ibb.co/LDBSj2DV/Dr-Bian-Ruby-Eyed-Savior.jpg" },                 
+                {hero: "Liu Shan", name: "Secret Base", price: "₱210.00", image: "https://i.ibb.co/jkxbLwBG/Liu-Shan-Secret-Base.jpg" },            
+                {hero: "Zhuangzi", name: "Natural Scientist", price: "₱210.00", image: "https://i.ibb.co/FLQbgnCq/Zhuangzi-Natural-Scientist.jpg" },             
+                {hero: "Ming", name: "Heavenly Official", price: "₱210.00", image: "https://i.ibb.co/q35CVZK0/Ming-Heavenly-Official.jpg" },             
+                {hero: "Dian Wei", name: "Junkyard Protector", price: "₱210.00", image: "https://i.ibb.co/HTcZ7wGw/Dian-Wei-Junkyard-Protector.jpg" },             
+                {hero: "Marco Polo", name: "Funky Western", price: "₱210.00", image: "https://i.ibb.co/qLSJpV1n/Marco-Polo-Funky-Western.jpg" },                 
+                {hero: "Dolia", name: "Shimmering Seas", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E6%9C%B5%E8%8E%89%E4%BA%9A-%E9%87%91%E8%89%B2%E6%BD%AE%E6%B1%90%281%29.dbb41aff.jpg" },            
+                {hero: "Zhou Yu", name: "Eclipse Blaze", price: "₱210.00", image: "https://i.ibb.co/yB0ypzz6/Zhou-Yu-Eclipse-Blaze.jpg" },             
+                {hero: "Han Xin", name: "Street Boss", price: "₱210.00", image: "https://i.ibb.co/JjLm7xJx/Han-Xin-Street-Boss.jpg" },             
+                {hero: "Lady Sun", name: "Power of Calm", price: "₱210.00", image: "https://i.ibb.co/Fk2bysdW/Lady-Sun-Power-of-Calm.jpg" },             
+                {hero: "Liu Bei", name: "New York Godfather", price: "₱210.00", image: "https://i.ibb.co/DDx9mS33/Liu-Bei-New-York-Godfather.jpg" },                 
+                {hero: "Angela", name: "Playful Trickster", price: "₱210.00", image: "https://cdn.midasbuy.com/public/3a06d67486fa2179752bad569429ec2d.png" },
+                {hero: "Zilong", name: "White Debonair", price: "₱255.00", image: "https://cdn.midasbuy.com/public/09e0b1e259fad96bbb9cd07668421fc0.png" },
+                {hero: "Allain", name: "Nutcracker Knight", price: "₱210.00", image: "https://cdn.midasbuy.com/public/b5d30be085e99265dc0cdf01d7dfa846.png" },
+                {hero: "Heino", name: "Temporal Agent", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E6%B5%B7%E8%AF%BA-%E6%97%B6%E7%A9%BA%E8%B0%8D%E5%BD%B1.5234ce96.jpg" },
+                {hero: "Mayene", name: "Snackin'", price: "₱210.00", image: "https://cdn.midasbuy.com/images/%E5%A7%AC%E5%B0%8F%E6%BB%A1-%E9%9B%B6%E9%A3%9F%E5%A4%A7%E4%BD%9C%E6%88%98.ab1dd5a3.jpg" },
+                {hero: "Dharma", name: "Steampunk Invetor", price: "₱210.00", image: "https://cdn.midasbuy.com/public/303a202b06ac85a04f9d0c63b1aa4ecb.png " },
+                {hero: "Lady Zhen", name: "Flowery Expectations", price: "₱210.00", image: "https://cdn.midasbuy.com/public/e907b7e958b1924ab264cd0f7853114f.png" },
+                {hero: "Lian Po", name: "Eternal Explorer", price: "₱210.00", image: "https://cdn.midasbuy.com/public/e77cf53f334633f9d414a7c2213d85fa.png" },
+                {hero: "Kongming", name: "Power of Control   ", price: "₱210.00", image: "https://cdn.midasbuy.com/public/639dbdc3a1994bce43c6d457e3d5b7bf.png" },
+                {hero: "Li Bai", name: "Power of Precision", price: "₱210.00", image: "https://cdn.midasbuy.com/public/7a8c068981eb6391f3f65bb39b2c8d44.png" },
+                {hero: "Musashi", name: "Spring`s Renewal", price: "₱210.00", image: "https://cdn.midasbuy.com/public/eb169976f2049e7f01f69ad23a04b420.png" },
+                {hero: "Zhang Fei", name: "Blessed Warrior", price: "₱210.00", image: "https://cdn.midasbuy.com/public/92f8f0035dd1d316d3195dbbe505d7cc.png" },
             ],
             beginner: [
-                { hero: "Ziya", name: "Fashion Godfather", price: "₱125.00", image: "https://i.ibb.co/p6dJgq3b/fashion-godfather-ziya.jpg" },
-                { hero: "Princess Frost", name: "Elven Princess", price: "₱125.00", image: "https://i.ibb.co/VYSh1Nn4/elven-princess-princess-frost.jpg" },
-                { hero: "Meng Ya", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/pjswCDM7/return-of-dreams-meng-ya.jpg" },
-                { hero: "Shi", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/dsgtckXd/return-of-dreams-shi.jpg" },
-                { hero: "Yao", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/YB7tMGfN/return-of-dreams-yao.jpg" },
-                { hero: "Garo", name: "Nostalgic Miko", price: "₱125.00", image: "https://i.ibb.co/pvnz4YPV/nostalgic-miko-garo.jpg" },
-                { hero: "Liu Bang", name: "Paladin's Light", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E5%88%98%E9%82%A6-%E5%9C%A3%E6%AE%BF%E4%B9%8B%E5%85%89.c835c820.jpg" },
-                { hero: "Yixing", name: "Snow Blossom", price: "₱125.00", image: "https://i.ibb.co/MyJZV5C2/snow-blossom-yixing.jpg" },
-                { hero: "Nezha", name: "Third Prince", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E5%93%AA%E5%90%92-%E4%B8%89%E5%A4%AA%E5%AD%90.e6ffe41f.jpg" },
-                { hero: "Xuance", name: "Mad Jester", price: "₱125.00", image: "https://i.ibb.co/Mxc90XDF/mad-jester-xuance.jpg" },
-                { hero: "Athena", name: "legendary Guardian", price: "₱125.00", image: "https://i.ibb.co/13fYWrt/legendary-guardian-athena.jpg" },
-                { hero: "Feyd", name: "Jade Aristocrat", price: "₱125.00", image: "https://cdn.midasbuy.com/images/F_%E6%9A%83_%E7%A2%A7%E7%8F%80%E7%BB%AF%E5%BD%B1.ce55d197.jpg" },
-                { hero: "Sakeer", name: "Painted Travels", price: "₱125.00", image: "https://i.ibb.co/6R43YjfX/painted-travels-sakeer.jpg" },
-                { hero: "Arke", name: "Loving Nurse", price: "₱125.00", image: "https://i.ibb.co/LzNJRxkg/loving-nurse-arke.jpg" },
-                { hero: "Milady", name: "Precise Deduction", price: "₱125.00", image: "https://cdn.midasbuy.com/public/6a662f0bc057804d02223a7aa059d97d.png" },
-                { hero: "Shangguan", name: "Bamboo Assassin", price: "₱125.00", image: "https://cdn.midasbuy.com/public/40111fab5769672f6f6af9144123ffaa.png" },
-                { hero: "Xiao Qiao", name: "Halloween Night", price: "₱125.00", image: "https://cdn.midasbuy.com/public/ff789136d597c0db44ad6aea0dbcffa9.png" },
-                { hero: "Wuyan", name: "Containment", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f9f4062b74753fa2b43d4c1e01cbc97f.png" },
-                { hero: "Lady Sun", name: "Cannoneer Lass", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c954968fdd113a4cf8c9e0890d1a51c7.png" },
-                { hero: "Sun Ce", name: "Sea Voyage", price: "₱125.00", image: "https://cdn.midasbuy.com/public/fda249bfe61bdbb947bae16d36476c7e.png" },
-                { hero: "Yuhuan", name: "Tragic Beauty  ", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%9C%93%E8%A3%B3%E6%9B%B2.53235565.jpg" },
-                { hero: "Huang Zhong", name: "Chicago Godfather", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E8%8A%9D%E5%8A%A0%E5%93%A5%E6%95%99%E7%88%B6.85998567.jpg" },
-                { hero: "Guiguzi", name: "Duke Lepus", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%AC%BC%E8%B0%B7%E5%AD%90-%E9%98%BF%E6%91%A9%E5%8F%B8%E5%85%AC%E7%88%B5.ccfdc931.jpg" },
-                { hero: "Liang", name: "Arabian Nights", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f6bc9515de093fc6f502badab4f31a93.png" },
-                { hero: "Dun", name: "Battle Knight", price: "₱125.00", image: "https://cdn.midasbuy.com/public/612bfb80dea381516586c8ff77f424a4.png" },
-                { hero: "Sima Yi", name: "Nightmare General", price: "₱125.00", image: "https://cdn.midasbuy.com/public/eeaf7d6979d96713629394c2715593a8.png" },
-                { hero: "Agudo", name: "Panda Keeper", price: "₱125.00", image: "https://cdn.midasbuy.com/public/5f0ab2dba8ff4eac90de65e5ca50c8a4.png" },
-                { hero: "Luna", name: "Blazing Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/7e8e5445e07a5dfaf4ef87148976c574.png" },
-                { hero: "Shouyue", name: "Crimson Sniper", price: "₱125.00", image: "https://cdn.midasbuy.com/public/3a689b4359d0c7ddb7663aa63561192d.png" },
-                { hero: "Da Qiao", name: "Ise Shrine Maiden", price: "₱125.00", image: "https://cdn.midasbuy.com/public/1032e4243f1286514d298212b8f0fe5f.png" },
-                { hero: "Cirrus", name: "Eye of Horus", price: "₱125.00", image: "https://cdn.midasbuy.com/public/ddee246c000c0d16ab67c1e9a18ec2d8.png" },
-                { hero: "Menki", name: "Realized Dreams", price: "₱125.00", image: "https://cdn.midasbuy.com/public/0117887bf53fb8ca6a4b9c44a7656b8e.png" },
-                { hero: "Zhou Yu", name: "Navy Admiral", price: "₱125.00", image: "https://cdn.midasbuy.com/public/53257e4bd4de880a561b3ebec0657bdb.png" },
-                { hero: "Sun Bin", name: "Temporal Enforcer", price: "₱125.00", image: "https://cdn.midasbuy.com/public/dc629de8a09a394a33f5ee05fe538509.png" },
-                { hero: "Lam", name: "Lonesome Hunter", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4c135f7eecc708ff5dbea8f436faa1e9.png" },
-                { hero: "Luban No.7", name: "Miraculous Puppet", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4b730434154a9a07b924babf6126f582.png" },
-                { hero: "Pei", name: "Street Brawler", price: "₱125.00", image: "https://cdn.midasbuy.com/public/51df22a394e263eab2f23cf698d8d830.png" },
-                { hero: "Ying", name: "Crimson Tassel", price: "₱125.00", image: "https://cdn.midasbuy.com/public/5701456352984d2db22db7277ddfc6dc.png" },
-                { hero: "Jing", name: "Ethernal Ice Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/d285db105da5acc3f030a5fd4d03a1c6.png   " },
-                { hero: "Yaria", name: "Forest Doe", price: "₱125.00", image: "https://cdn.midasbuy.com/public/3d7f82f7591ec427a3e0c7e8d5f4cd7a.png" },
-                { hero: "Li Xin", name: "Searing Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/63929e5f08536c9d13c06045859786eb.png" },
-                { hero: "Arli", name: "Flower Dance", price: "₱125.00", image: "https://cdn.midasbuy.com/public/48005959b997e4f27b61eae90bf5a8c6.png" },
-                { hero: "Nuwa", name: "Daughter of the Nile", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4b4f4f77d2c6c5c72ba45292ed4307c0.png" },
-                { hero: "Kaizer", name: "Dragonlord", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%BE%99%E5%9F%9F%E9%A2%86%E4%B8%BB.cda5d7f9.jpg" },
-                { hero: "Gan & Mo", name: "Seventh Doll", price: "₱125.00", image: "https://cdn.midasbuy.com/public/51ee4a54286b7a94a14a50e8aa0350ce.png" },
-                { hero: "Donghuang", name: "Ruler of the Sea", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c08433a084beb927a9cf540ab239caf5.png" },
-                { hero: "Kongming", name: "Space Commander", price: "₱125.00", image: "https://cdn.midasbuy.com/public/57252d21b8f9fdf427c3a08980bdefa0.png" },
-                { hero: "Yang Jian", name: "Egyptian Pharaoh", price: "₱125.00", image: "https://cdn.midasbuy.com/public/8f7f829cfdd4347f552e19b607c54377.png" },
-                { hero: "Cai Yan", name: "Throne of Roses", price: "₱125.00", image: "https://cdn.midasbuy.com/public/04d044414cf69b0958eac8a309e2bb24.png" },
-                { hero: "Consort Yu", name: "Classy Corsair", price: "₱125.00", image: "https://cdn.midasbuy.com/public/dac5430d779d3aa5fd55d6535020baba.png" },
-                { hero: "Fang", name: "Special Ops", price: "₱125.00", image: "https://cdn.midasbuy.com/public/8df55594b466c1e55e30b69414ed5a05.png" },
-                { hero: "Kui", name: "King Yama", price: "₱125.00", image: "https://cdn.midasbuy.com/public/bb72956cfe3dbbf3df55d37975bf60c6.png" },
-                { hero: "Li Bai", name: "Van Helsing", price: "₱125.00", image: "https://cdn.midasbuy.com/public/27eca884225c60db1f964b2807b3acfc.png" },
-                { hero: "Prince of Lanling", name: "Hidden Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/1f263ad5a88d8ed72450c25b3202fdb4.png" },
-                { hero: "Di Renjie", name: "Imperial Police", price: "₱125.00", image: "https://cdn.midasbuy.com/public/39db8823206caa892077ca2ce0a81a13.png" },
-                { hero: "Diaochan", name: "Elegant Dancer", price: "₱125.00", image: "https://cdn.midasbuy.com/public/044f1a40342655a83c531267cdf2d7d8.png" },
-                { hero: "Ata", name: "High Tide", price: "₱125.00", image: "https://cdn.midasbuy.com/public/7760a11f0bf54d689457b6c79c87f518.png" },
-                { hero: "Gao", name: "Metal Frenzy", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f5d482ada71111502f24d15cc29139f3.png" },
-                { hero: "Fuzi", name: "Trendy Celestial", price: "₱125.00", image: "https://cdn.midasbuy.com/public/b6c50efe3681c52c2e0e0fb7c2d39c32.png" },
-                { hero: "Liu Shan", name: "Kitty Attack", price: "₱125.00", image: "https://cdn.midasbuy.com/public/e168fcf7572421e16bf4d47c0f4960df.png" },
-                { hero: "Wukong", name: "Vaquero", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c3d636fdf66072bd169dcc896430341d.png" },
+                {hero: "Ziya", name: "Fashion Godfather", price: "₱125.00", image: "https://i.ibb.co/p6dJgq3b/fashion-godfather-ziya.jpg" },                     
+                {hero: "Princess Frost", name: "Elven Princess", price: "₱125.00", image: "https://i.ibb.co/VYSh1Nn4/elven-princess-princess-frost.jpg" },            
+                {hero: "Meng Ya", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/pjswCDM7/return-of-dreams-meng-ya.jpg" },               
+                {hero: "Shi", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/dsgtckXd/return-of-dreams-shi.jpg" },               
+                {hero: "Yao", name: "Return of Dreams", price: "₱125.00", image: "https://i.ibb.co/5bw4g0T/Yao-Return-of-Dreams.jpg" },               
+                {hero: "Garo", name: "Nostalgic Miko", price: "₱125.00", image: "https://i.ibb.co/jZr4YFMt/Garo-Nostalgic-Miko.jpg" },               
+                {hero: "Liu Bang", name: "Paladin's Light'", price: "₱125.00", image: "https://i.ibb.co/Lzq0BpYp/Liu-Bang-Paladin-s-Light.jpg" },               
+                {hero: "Yixing", name: "Snow Blossom", price: "₱125.00", image: "https://i.ibb.co/n8zfdRrg/Yixing-Snow-Blossom.jpg" },               
+                {hero: "Nezha", name: "Third Prince", price: "₱125.00", image: "https://i.ibb.co/7N6b8JPP/Nezha-Third-Prince.jpg" },            
+                {hero: "Xuance", name: "Mad Jester", price: "₱125.00", image: "https://i.ibb.co/xtDznj4x/Xuance-Mad-Jester.jpg" },               
+                {hero: "Athena", name: "legendary Guardian", price: "₱125.00", image: "https://i.ibb.co/tp4KW2YY/Athena-Legendary-Guardian.jpg" },               
+                {hero: "Feyd", name: "Jade Aristocrat", price: "₱125.00", image: "https://i.ibb.co/wNX2bH5t/Feyd-Jade-Aristocrat.jpg" },               
+                {hero: "Sakeer", name: "Painted Travels", price: "₱125.00", image: "https://cdn.midasbuy.com/images/IEGAMS-3000186-3000101_3018882.cfebb4d1.jpg" },               
+                {hero: "Arke", name: "Loving Nurse", price: "₱125.00", image: "https://i.ibb.co/LzNJRxkg/loving-nurse-arke.jpg" },               
+                {hero: "Milady", name: "Precise Deduction", price: "₱125.00", image: "https://cdn.midasbuy.com/public/6a662f0bc057804d02223a7aa059d97d.png" },
+                {hero: "Shangguan", name: "Bamboo Assassin", price: "₱125.00", image: "https://cdn.midasbuy.com/public/40111fab5769672f6f6af9144123ffaa.png" },
+                {hero: "Xiao Qiao", name: "Halloween Night", price: "₱125.00", image: "https://cdn.midasbuy.com/public/ff789136d597c0db44ad6aea0dbcffa9.png" },
+                {hero: "Wuyan", name: "Containment", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f9f4062b74753fa2b43d4c1e01cbc97f.png" },
+                {hero: "Lady Sun", name: "Cannoneer Lass", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c954968fdd113a4cf8c9e0890d1a51c7.png"},
+                {hero: "Sun Ce", name: "Sea Voyage", price: "₱125.00", image: "https://cdn.midasbuy.com/public/fda249bfe61bdbb947bae16d36476c7e.png"},
+                {hero: "Yuhuan", name: "Tragic Beauty  ", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%9C%93%E8%A3%B3%E6%9B%B2.53235565.jpg"},
+                {hero: "Huang Zhong", name: "Chicago Godfather", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E8%8A%9D%E5%8A%A0%E5%93%A5%E6%95%99%E7%88%B6.85998567.jpg"},
+                {hero: "Guiguzi", name: "Duke Lepus", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%AC%BC%E8%B0%B7%E5%AD%90-%E9%98%BF%E6%91%A9%E5%8F%B8%E5%85%AC%E7%88%B5.ccfdc931.jpg"},
+                {hero: "Liang", name: "Arabian Nights", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f6bc9515de093fc6f502badab4f31a93.png"},
+                {hero: "Dun", name: "Battle Knight", price: "₱125.00", image: "https://cdn.midasbuy.com/public/612bfb80dea381516586c8ff77f424a4.png"},
+                {hero: "Sima Yi", name: "Nightmare General", price: "₱125.00", image: "https://cdn.midasbuy.com/public/eeaf7d6979d96713629394c2715593a8.png"},
+                {hero: "Agudo", name: "Panda Keeper", price: "₱125.00", image: "https://cdn.midasbuy.com/public/5f0ab2dba8ff4eac90de65e5ca50c8a4.png"},
+                {hero: "Luna", name: "Blazing Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/7e8e5445e07a5dfaf4ef87148976c574.png"},
+                {hero: "Shouyue", name: "Crimson Sniper", price: "₱125.00", image: "https://cdn.midasbuy.com/public/3a689b4359d0c7ddb7663aa63561192d.png"},  
+                {hero: "Da Qiao", name: "Ise Shrine Maiden", price: "₱125.00", image: "https://cdn.midasbuy.com/public/1032e4243f1286514d298212b8f0fe5f.png"},
+                {hero: "Cirrus", name: "Eye of Horus", price: "₱125.00", image: "https://cdn.midasbuy.com/public/ddee246c000c0d16ab67c1e9a18ec2d8.png"},
+                {hero: "Menki", name: "Realized Dreams", price: "₱125.00", image: "https://cdn.midasbuy.com/public/0117887bf53fb8ca6a4b9c44a7656b8e.png"},
+                {hero: "Zhou Yu", name: "Navy Admiral", price: "₱125.00", image: "https://cdn.midasbuy.com/public/53257e4bd4de880a561b3ebec0657bdb.png"},                
+                {hero: "Sun Bin", name: "Temporal Enforcer", price: "₱125.00", image: "https://cdn.midasbuy.com/public/dc629de8a09a394a33f5ee05fe538509.png"},
+                {hero: "Lam", name: "Lonesome Hunter", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4c135f7eecc708ff5dbea8f436faa1e9.png"},                
+                {hero: "Luban No.7", name: "Miraculous Puppet", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4b730434154a9a07b924babf6126f582.png"},
+                {hero: "Pei", name: "Street Brawler", price: "₱125.00", image: "https://cdn.midasbuy.com/public/51df22a394e263eab2f23cf698d8d830.png"},                
+                {hero: "Ying", name: "Crimson Tassel", price: "₱125.00", image: "https://cdn.midasbuy.com/public/5701456352984d2db22db7277ddfc6dc.png"},
+                {hero: "Jing", name: "Ethernal Ice Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/d285db105da5acc3f030a5fd4d03a1c6.png   "},                
+                {hero: "Yaria", name: "Forest Doe", price: "₱125.00", image: "https://cdn.midasbuy.com/public/3d7f82f7591ec427a3e0c7e8d5f4cd7a.png"},
+                {hero: "Li Xin", name: "Searing Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/63929e5f08536c9d13c06045859786eb.png"},                
+                {hero: "Arli", name: "Flower Dance", price: "₱125.00", image: "https://cdn.midasbuy.com/public/48005959b997e4f27b61eae90bf5a8c6.png"},
+                {hero: "Nuwa", name: "Daughter of the Nile", price: "₱125.00", image: "https://cdn.midasbuy.com/public/4b4f4f77d2c6c5c72ba45292ed4307c0.png"},                
+                {hero: "Kaizer", name: "Dragonlord", price: "₱125.00", image: "https://cdn.midasbuy.com/images/%E9%BE%99%E5%9F%9F%E9%A2%86%E4%B8%BB.cda5d7f9.jpg"},
+                {hero: "Gan & Mo", name: "Seventh Doll", price: "₱125.00", image: "https://cdn.midasbuy.com/public/51ee4a54286b7a94a14a50e8aa0350ce.png"},                
+                {hero: "Donghuang", name: "Ruler of the Sea", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c08433a084beb927a9cf540ab239caf5.png"},
+                {hero: "Kongming", name: "Space Commander", price: "₱125.00", image: "https://cdn.midasbuy.com/public/57252d21b8f9fdf427c3a08980bdefa0.png"},
+                {hero: "Yang Jian", name: "Egyptian Pharaoh", price: "₱125.00", image: "https://cdn.midasbuy.com/public/8f7f829cfdd4347f552e19b607c54377.png"},
+                {hero: "Cai Yan", name: "Throne of Roses", price: "₱125.00", image: "https://cdn.midasbuy.com/public/04d044414cf69b0958eac8a309e2bb24.png"},
+                {hero: "Consort Yu", name: "Classy Corsair", price: "₱125.00", image: "https://cdn.midasbuy.com/public/dac5430d779d3aa5fd55d6535020baba.png"},
+                {hero: "Fang", name: "Special Ops", price: "₱125.00", image: "https://cdn.midasbuy.com/public/8df55594b466c1e55e30b69414ed5a05.png"},
+                {hero: "Kui", name: "King Yama", price: "₱125.00", image: "https://cdn.midasbuy.com/public/bb72956cfe3dbbf3df55d37975bf60c6.png"},
+                {hero: "Li Bai", name: "Van Helsing", price: "₱125.00", image: "https://cdn.midasbuy.com/public/27eca884225c60db1f964b2807b3acfc.png"},
+                {hero: "Prince of Lanling", name: "Hidden Blade", price: "₱125.00", image: "https://cdn.midasbuy.com/public/1f263ad5a88d8ed72450c25b3202fdb4.png"},
+                {hero: "Di Renjie", name: "Imperial Police", price: "₱125.00", image: "https://cdn.midasbuy.com/public/39db8823206caa892077ca2ce0a81a13.png"},
+                {hero: "Diaochan", name: "Elegant Dancer", price: "₱125.00", image: "https://cdn.midasbuy.com/public/044f1a40342655a83c531267cdf2d7d8.png"},
+                {hero: "Ata", name: "High Tide", price: "₱125.00", image: "https://cdn.midasbuy.com/public/7760a11f0bf54d689457b6c79c87f518.png"},
+                {hero: "Gao", name: "Metal Frenzy", price: "₱125.00", image: "https://cdn.midasbuy.com/public/f5d482ada71111502f24d15cc29139f3.png"},
+                {hero: "Fuzi", name: "Trendy Celestial", price: "₱125.00", image: "https://cdn.midasbuy.com/public/b6c50efe3681c52c2e0e0fb7c2d39c32.png"},
+                {hero: "Liu Shan", name: "Kitty Attack", price: "₱125.00", image: "https://cdn.midasbuy.com/public/e168fcf7572421e16bf4d47c0f4960df.png"},
+                {hero: "Wukong", name: "Vaquero", price: "₱125.00", image: "https://cdn.midasbuy.com/public/c3d636fdf66072bd169dcc896430341d.png"},
             ]
         };
-
-        // Current selected category and search term
+    
+        const testimonials = [
+            // { name: "James Lee", initials: "JL", purchase: "Lyn2025 Skin", rating: "★★★★★", text: "Super galing ni kuya Clyde! Very trustworthy seller. Worth it ang ₱730!", date: "March 28, 2025", featured: true },
+            // { name: "Anna Mendoza", initials: "AM", purchase: "Limited Edition Skin", rating: "★★★★★", text: "Super bilis ng transaction! Highly recommended seller!", date: "March 25, 2025" },
+            // { name: "Ricky Domingo", initials: "RD", purchase: "Epic Skin", rating: "★★★★★", text: "First time buyer pero super smooth ng transaction!", date: "March 22, 2025" },
+            // { name: "Karen Santos", initials: "KS", purchase: "Champion2024 Skin", rating: "★★★★☆", text: "Mabilis ang transaction. Sulit ang Champion2024 skin!", date: "March 20, 2025" },
+            // { name: "Miguel Cruz", initials: "MC", purchase: "Legend Skin", rating: "★★★★★", text: "Ang ganda ng Legend skin! Trusted seller si Clydeshop!", date: "March 18, 2025" },
+            // { name: "Paolo Torres", initials: "PT", purchase: "Rare Skin", rating: "★★★★★", text: "Salamat sa mabilis na transaction! Recommended shop!", date: "March 15, 2025" }
+        ];
+    
         let currentCategory = 'beginner';
         let currentSearchTerm = '';
         let currentFilter = 'all';
-
-        // Initialize the page with beginner skins
+        let currentTab = 'team';
+    
         document.addEventListener('DOMContentLoaded', function () {
-            // Set beginner skins as default
             const beginnerPlayer = document.querySelector('.player[onclick*="beginner"]');
             if (beginnerPlayer) {
                 setActivePlayer(beginnerPlayer, 'beginner');
             }
             loadSkins('beginner');
-
             const firstCategory = document.querySelector('.shop-category');
             if (firstCategory) {
                 firstCategory.classList.add('open');
                 firstCategory.nextElementSibling.classList.add('show');
             }
-
-            // Check for saved theme preference
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
             }
         });
-
-        // Toggle between light and dark mode
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-
-            // Save preference to localStorage
-            const isLightMode = document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    
+        function toggleSidebar() {
+        const sidebarContent = document.querySelector('.sidebar-content');
+        sidebarContent.classList.toggle('hide');
+        
+        // On mobile, when sidebar is shown, prevent body scrolling
+        if (window.innerWidth <= 767) {
+            document.body.style.overflow = sidebarContent.classList.contains('hide') ? 'auto' : 'hidden';
         }
-
-        // Load skins based on category and apply current search filter
+    }
+    
         function loadSkins(category) {
             const characterGrid = document.getElementById('character-grid');
             characterGrid.innerHTML = '';
-
-            const skins = skinData[category];
+            characterGrid.className = 'character-grid'; // Reset to character-grid class
+            const contentTitle = document.querySelector('.content-title');
+            contentTitle.textContent = `${category.charAt(0).toUpperCase() + category.slice(1)} Hero Skins`;
+            document.querySelector('.search-bar').style.display = 'flex'; // Show search bar
+            document.querySelector('.filter-options').style.display = 'flex'; // Show filter options
+            const skins = skinData[category] || [];
             const searchTerm = currentSearchTerm.toLowerCase();
-
+    
             skins.forEach((skin) => {
-                if (searchTerm && !skin.name.toLowerCase().includes(searchTerm)) {
-                    return;
-                }
-
-                // Apply filter
-                if (currentFilter === 'popular' && !skin.popular) {
-                    return;
-                }
-
+                if (searchTerm && !skin.name.toLowerCase().includes(searchTerm)) return;
+                if (currentFilter === 'popular' && !skin.popular) return;
                 const card = document.createElement('div');
                 card.className = 'character-card' + (skin.popular ? ' popular' : '');
-
                 card.innerHTML = `
                     <img src="${skin.image}" alt="${skin.name}" class="character-image" style="transform: translateX(${skin.position}px) scale(${skin.scale});">
                     <div class="character-price">${skin.price}</div>
                     ${skin.tag ? `<div class="character-tag">${skin.tag}</div>` : ''}
                     ${skin.popular ? `<div class="popular-badge"></div>` : ''}
                     <div class="character-name-overlay"></div>
-                    <div class="hero-name">${skin.hero}</div>                        
+                    <div class="hero-name">${skin.hero}</div>
                     <div class="character-name">${skin.name}</div>
                 `;
-                if (skin.popular) {
-                    card.style.border = "2px solid #8a6effcc";
-                }
-
+                if (skin.popular) card.style.border = "2px solid #8a6effcc";
                 characterGrid.appendChild(card);
             });
-
+    
             if (characterGrid.children.length === 0) {
                 const noResultsMsg = currentSearchTerm
                     ? `No heroes found matching "${currentSearchTerm}" in this category`
@@ -1638,82 +1511,89 @@
                 characterGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: rgba(255,255,255,0.5)">${noResultsMsg}</div>`;
             }
         }
-
-        // Set active filter and reload skins
+    
+        function loadTestimonials() {
+            const characterGrid = document.getElementById('character-grid');
+            characterGrid.innerHTML = '';
+            characterGrid.className = 'testimonials-container';
+            const contentTitle = document.querySelector('.content-title');
+            contentTitle.textContent = 'Customer Reviews';
+            document.querySelector('.search-bar').style.display = 'none';
+            document.querySelector('.filter-options').style.display = 'none';
+    
+            testimonials.forEach(testimonial => {
+                const card = document.createElement('div');
+                card.className = 'testimonial-item' + (testimonial.featured ? ' featured-testimonial' : '');
+                card.innerHTML = `
+                    ${testimonial.featured ? '<div class="featured-badge">Featured</div>' : ''}
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">${testimonial.initials}</div>
+                        <div>
+                            <div class="testimonial-name">${testimonial.name}</div>
+                            <div class="testimonial-purchase">${testimonial.purchase}</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">${testimonial.rating}</div>
+                    <div class="testimonial-text">${testimonial.text}</div>
+                    <div class="testimonial-date">${testimonial.date}</div>
+                `;
+                characterGrid.appendChild(card);
+            });
+        }
+    
         function setActiveFilter(element, filterType) {
-            // Remove active class from all filter options
             const filterOptions = document.querySelectorAll('.filter-option');
             filterOptions.forEach(option => option.classList.remove('active'));
-
-            // Add active class to clicked filter
             element.classList.add('active');
-
-            // Set current filter and reload skins
             currentFilter = filterType;
             loadSkins(currentCategory);
         }
-
-        // Toggle sidebar for mobile view
-        function toggleSidebar() {
-            const sidebarContent = document.querySelector('.sidebar-content');
-            sidebarContent.classList.toggle('hide');
-        }
-
-        // Tab functionality
+    
         const tabs = document.querySelectorAll('.sidebar-tab');
         tabs.forEach(tab => {
             tab.addEventListener('click', function () {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-
-                // Add active class to clicked tab
-                this.classList.add('active');
-
-                // Hide all panels
-                const panels = document.querySelectorAll('.sidebar-panel');
-                panels.forEach(panel => panel.classList.remove('active'));
-
-                // Show the selected panel
-                const panelId = this.getAttribute('data-tab') + '-panel';
-                document.getElementById(panelId).classList.add('active');
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const panels = document.querySelectorAll('.sidebar-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        const panelId = this.getAttribute('data-tab') + '-panel';
+        if (panelId !== 'reviews-panel') {
+            document.getElementById(panelId).classList.add('active');
+        }
+    
+                currentTab = this.getAttribute('data-tab');
+                if (currentTab === 'reviews') {
+                    loadTestimonials();
+                } else if (currentTab === 'team') {
+                    const beginnerPlayer = document.querySelector('.player[onclick*="beginner"]');
+                    if (beginnerPlayer) {
+                        setActivePlayer(beginnerPlayer, 'beginner');
+                        loadSkins('beginner'); // Explicitly load beginner skins
+                    }
+                } else {
+                    document.querySelector('.character-grid').className = 'character-grid';
+                    document.querySelector('.search-bar').style.display = 'flex';
+                    document.querySelector('.filter-options').style.display = 'flex';
+                }
             });
         });
-
-        // Shop category toggle
+    
         function toggleCategory(category) {
             category.classList.toggle('open');
             const items = category.nextElementSibling;
             items.classList.toggle('show');
         }
-
-        // Modified setActivePlayer function to update the content title
+    
         function setActivePlayer(player, category) {
-            // Remove active class from all players
-            const players = document.querySelectorAll('.player');
-            players.forEach(p => p.classList.remove('player-active'));
-
-            // Add active class to clicked player
-            player.classList.add('player-active');
-
-            // Update the header title based on category
-            const contentTitle = document.querySelector('.content-title');
-
-            // Create category display text mapping
-            const categoryNames = {
-                'premium': 'Premium Hero Skins',
-                'epic': 'Epic Hero Skins',
-                'rare': 'Rare & Champion Hero Skins',
-                'beginner': 'Beginner Hero Skins'
-            };
-
-            // Update the title
-            contentTitle.textContent = categoryNames[category] || 'Hero Skins';
-
-            // Load the corresponding skins (maintaining current search term)
-            currentCategory = category;
-            loadSkins(category);
+            if (currentTab !== 'reviews') {
+                const players = document.querySelectorAll('.player');
+                players.forEach(p => p.classList.remove('player-active'));
+                player.classList.add('player-active');
+                currentCategory = category;
+                loadSkins(category);
+            }
         }
-
+    
         // Search heroes function
         function searchHeroes() {
             const searchInput = document.getElementById('hero-search');
@@ -1722,7 +1602,16 @@
             // Reload skins with current category and new search term
             loadSkins(currentCategory);
         }
+        
+        
+        
+        function toggleTooltip(id) {
+    const tooltip = document.getElementById(id);
+    const isVisible = tooltip.style.display === 'block';
+    document.querySelectorAll('.tooltip').forEach(el => el.style.display = 'none'); // close others
+    tooltip.style.display = isVisible ? 'none' : 'block';
+}
+
     </script>
 </body>
-
 </html>
