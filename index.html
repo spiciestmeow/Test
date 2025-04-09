@@ -254,7 +254,6 @@
             max-height: 100%;
         }
         
-        /* Custom scrollbar for shop menu */
         .shop-menu::-webkit-scrollbar {
             width: 5px;
         }
@@ -402,11 +401,10 @@
             padding: 20px 20px 0px 20px;
             overflow-y: auto;
             flex: 1;
-            scrollbar-width: thin; /* For Firefox */
-            scrollbar-color: #8a6eff #1a1629; /* For Firefox */
+            scrollbar-width: thin;
+            scrollbar-color: #8a6eff #1a1629;
         }
 
-        /* Custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
         .content-scrollable::-webkit-scrollbar {
             width: 8px;
         }
@@ -425,7 +423,6 @@
             background: #b8a9ff;
         }
 
-        /* For light mode */
         .light-mode .content-scrollable::-webkit-scrollbar-track {
             background: #f0f0f5;
         }
@@ -442,11 +439,9 @@
         scroll-behavior: smooth;
         }
 
-        /* Add momentum scrolling for mobile devices */
         .content-scrollable {
             -webkit-overflow-scrolling: touch;
         }
-
 
         .content-header-container {
             position: sticky;
@@ -753,7 +748,7 @@
             }
             .content {
                 height: 100vh;
-                overflow: hidden; /* Prevent content from causing body scroll */
+                overflow: hidden;
             }
             .footer-container { padding: 15px 15px 5px 15px; }
             .sidebar-content { display: block !important; }
@@ -1023,8 +1018,8 @@
         .tooltip {
             display: none;
             position: absolute;
-            top: 120%; /* position below the button */
-            left: 0;   /* align to the left edge of the button */
+            top: 120%;
+            left: 0;
             background-color: #333;
             color: white;
             padding: 6px 10px;
@@ -1210,7 +1205,6 @@
             </div>
             <div class="content-scrollable">
                 <div class="character-grid" id="character-grid">
-                    <!-- Character cards or testimonials will be dynamically inserted here -->
                 </div>
                 <div class="footer-container">
                     <div class="midasbuy-logo">
@@ -1469,7 +1463,6 @@
         const sidebarContent = document.querySelector('.sidebar-content');
         sidebarContent.classList.toggle('hide');
         
-        // On mobile, when sidebar is shown, prevent body scrolling
         if (window.innerWidth <= 767) {
             document.body.style.overflow = sidebarContent.classList.contains('hide') ? 'auto' : 'hidden';
         }
@@ -1478,11 +1471,11 @@
         function loadSkins(category) {
             const characterGrid = document.getElementById('character-grid');
             characterGrid.innerHTML = '';
-            characterGrid.className = 'character-grid'; // Reset to character-grid class
+            characterGrid.className = 'character-grid';
             const contentTitle = document.querySelector('.content-title');
             contentTitle.textContent = `${category.charAt(0).toUpperCase() + category.slice(1)} Hero Skins`;
-            document.querySelector('.search-bar').style.display = 'flex'; // Show search bar
-            document.querySelector('.filter-options').style.display = 'flex'; // Show filter options
+            document.querySelector('.search-bar').style.display = 'flex';
+            document.querySelector('.filter-options').style.display = 'flex';
             const skins = skinData[category] || [];
             const searchTerm = currentSearchTerm.toLowerCase();
     
@@ -1568,7 +1561,7 @@
                     const beginnerPlayer = document.querySelector('.player[onclick*="beginner"]');
                     if (beginnerPlayer) {
                         setActivePlayer(beginnerPlayer, 'beginner');
-                        loadSkins('beginner'); // Explicitly load beginner skins
+                        loadSkins('beginner');
                     }
                 } else {
                     document.querySelector('.character-grid').className = 'character-grid';
@@ -1594,12 +1587,10 @@
             }
         }
     
-        // Search heroes function
         function searchHeroes() {
             const searchInput = document.getElementById('hero-search');
             currentSearchTerm = searchInput.value.trim();
 
-            // Reload skins with current category and new search term
             loadSkins(currentCategory);
         }
         
@@ -1608,7 +1599,7 @@
         function toggleTooltip(id) {
     const tooltip = document.getElementById(id);
     const isVisible = tooltip.style.display === 'block';
-    document.querySelectorAll('.tooltip').forEach(el => el.style.display = 'none'); // close others
+    document.querySelectorAll('.tooltip').forEach(el => el.style.display = 'none');
     tooltip.style.display = isVisible ? 'none' : 'block';
 }
 
